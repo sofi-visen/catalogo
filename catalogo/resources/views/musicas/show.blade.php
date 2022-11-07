@@ -28,7 +28,7 @@
 <div class="card-body">
         <h3 class="card-title">ID: {{$musica->id}}</h3>
         <p class="text">Data de Lançamento: {{$musica->datalancamento}}</a><br/>
-        Artista: {{$musica->artista}}<br/>
+        Artista: {{$musica->artista_id}} - {{$musica->artista->nomeartistico}}<br/>
         Álbum: {{$musica->álbum}}</p>
 </div>
 <div class="card-footer">

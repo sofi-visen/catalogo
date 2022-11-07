@@ -10,8 +10,16 @@
     {{Form::text('nome', '',['class'=>'form-control','required', 'placeholder'=>'nome'])}}
     {{Form::label('datalancamento', 'Data de lançamento')}}
     {{Form::text('datalancamento', '',['class'=>'form-control','required', 'placeholder'=>'xxxx'])}}
-    {{Form::label('artista', 'Artista')}}
-    {{Form::text('artista', '',['class'=>'form-control','required', 'placeholder'=>'artista'])}}
+    
+    {{Form::open(['route'=>'musicas.store', 'method'=>'POST','enctype'=>'multipart/form-data'])}}
+    {{Form::label('artista_id', 'Artista')}}
+    {{Form::text('artista_id', '',['class'=>'form-control','required', 'placeholder'=>'selecione um artista','list'=>'listartistas'])}}
+    <datalist id='listartistas'>
+        @foreach($artistas as $artista)
+            <option value="{{$artista->id}}">{{$artista->nomeartistico}}</option>
+        @endforeach
+    </datalist>
+
     {{Form::label('álbum', 'Álbum')}}
     {{Form::text('album', '',['class'=>'form-control','required', 'placeholder'=>'nome do album'])}}
     {{Form::label('foto', 'Foto')}}

@@ -10,7 +10,7 @@
 </head>
 <body>
  <div class="container">  
- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+ <nav class="navbar navbar-expand-md navbar-light" style="background-color: #e3f2fd;">
   <div class="container-fluid">
     <a class="navbar-brand nav-link disabled">Catálogo</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" 

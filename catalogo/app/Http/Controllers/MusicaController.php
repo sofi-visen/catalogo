@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Musica;
+use App\Models\Artista;
 use Session;    
 
 class MusicaController extends Controller
@@ -23,7 +24,7 @@ class MusicaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function buscar(Request $request) {
-        $musicas = Musica::where('nome','LIKE','%'.$request->input('busca').'%')->orwhere('artista','LIKE','%'.$request->input('busca').'%')->paginate(5);
+        $musicas = Musica::where('nome','LIKE','%'.$request->input('busca').'%')->orwhere('artista_id','LIKE','%'.$request->input('busca').'%')->paginate(5);
         return view('musicas.index',array('musicas' => $musicas,'busca'=>$request->input('busca')));
     }
 
@@ -43,10 +44,11 @@ class MusicaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+        $this->validate($request,['artista_id'=>'required']);
         $musica = new Musica();
         $musica->nome=$request->input('nome');
         $musica->datalancamento=$request->input('datalancamento');
-        $musica->artista=$request->input('artista');
+        $musica->artista_id=$request->input('artista_id');
         $musica->álbum=$request->input('album');
       
         if($musica->save()){  
@@ -65,7 +67,8 @@ class MusicaController extends Controller
      */
     public function create()
     {
-         return view('musicas.create');
+          $artistas = Artista::All();
+          return view('musicas.create',array('artistas' => $artistas));
     }
     /**
      * Show the form for editing the specified resource.
@@ -75,8 +78,9 @@ class MusicaController extends Controller
      */
     public function edit($id)
     {
+            $artistas = Artista::All();
             $musica = Musica::find($id);
-            return view('musicas.edit',array('musica' => $musica));
+            return view('musicas.edit',array('musica' => $musica,'artistas' => $artistas));
       
     }
     /**
@@ -91,7 +95,7 @@ class MusicaController extends Controller
             $this->validate($request,[
                 'nome' => 'required',
                 'datalancamento' => 'required',
-                'artista' => 'required',
+                'artista_id' => 'required',
                 'álbum' => 'required',
             ]);
             $musica = Musica::find($id);
@@ -102,7 +106,7 @@ class MusicaController extends Controller
             }
             $musica->nome = $request->input('nome');
             $musica->datalancamento = $request->input('datalancamento');
-            $musica->artista = $request->input('artista');
+            $musica->artista_id = $request->input('artista_id');
             $musica->álbum = $request->input('álbum');
             if($musica->save()) {
                 Session::flash('mensagem','Música alterada com sucesso');

@@ -1,7 +1,7 @@
 @extends('layout.app')
 @section('catalogo')
 @section('content')
-<br><br><br><br>
+<br><br>
 <h1 align="center">Acompanhe os artistas e músicas cadastrados</h1>
 <br><br>
 <div class="row justify-content-center">
@@ -20,6 +20,7 @@
                         {{$numMusicas}}
                     </div>
                 </div>
-            </div>
-
-@endsection
+            </div>   
+        </div>
+            <img src="./img/home.jfif">        
+@endsection 
