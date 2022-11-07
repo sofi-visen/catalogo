@@ -23,8 +23,8 @@ class ArtistaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function buscar(Request $request) {
-        $artistas = Artista::where('nomeartista','LIKE','%'.$request->input('busca').'%')->paginate(5);
-        return view('contato.index',array('contatos' => $contatos,'busca'=>$request->input('busca')));
+        $artistas = Artista::where('nomeartistico','LIKE','%'.$request->input('busca').'%')->paginate(5);
+        return view('artistas.index',array('artistas' => $artistas,'busca'=>$request->input('busca')));
     }
 
     /**
@@ -49,6 +49,11 @@ class ArtistaController extends Controller
         $artista->idade=$request->input('idade');
         $artista->pais=$request->input('pais');
         if($artista->save()){
+            if($request->hasFile('foto')){
+            $imagem = $request->file('foto');
+            $nomearquivo = md5($artista->id).".".$imagem->getClientOriginalExtension();
+            $request->file('foto')->move(public_path('.\img\artistas'),$nomearquivo);
+        }
             return redirect('artistas');
         }
     }
@@ -70,8 +75,38 @@ class ArtistaController extends Controller
     public function edit($id)
     {
             $artista = Artista::find($id);
-            return view('artista.edit',array('artista' => $artista));
+            return view('artistas.edit',array('artista' => $artista));
       
+    }
+     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+            $this->validate($request,[
+                'nomecompleto' => 'required',
+                'nomeartistico' => 'required',
+                'idade' => 'required',
+                'pais' => 'required',
+            ]);
+            $artista = Artista::find($id);
+            if($request->hasFile('foto')){
+                $imagem = $request->file('foto');
+                $nomearquivo = md5($artista->id).".".$imagem->getClientOriginalExtension();
+                $request->file('foto')->move(public_path('.\img\artistas'),$nomearquivo);
+            }
+            $artista->nomecompleto = $request->input('nomecompleto');
+            $artista->nomeartistico = $request->input('nomeartistico');
+            $artista->idade = $request->input('idade');
+            $artista->pais = $request->input('pais');
+            if($artista->save()) {
+                Session::flash('mensagem','Artista alterado com sucesso');
+                return redirect(url('artistas/'));
+            }
     }
      /**
      * Remove the specified resource from storage.
@@ -83,6 +118,9 @@ class ArtistaController extends Controller
     public function destroy(Request $request, $id)
     {
             $artista = Artista::find($id);
+            if (isset($request->foto)) {
+                unlink($request->foto);
+                }
             $artista->delete();
             Session::flash('mensagem','Artista excluído com sucesso');
             return redirect(url('artistas/'));

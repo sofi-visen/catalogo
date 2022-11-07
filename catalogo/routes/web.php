@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArtistaController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MusicaController;
 
 
 /*
@@ -17,4 +18,8 @@ use App\Http\Controllers\HomeController;
 */
 Route::get('artistas/buscar',[ArtistaController::class,'buscar']);
 Route::resource('artistas', ArtistaController::class);
+
+Route::get('musicas/buscar',[MusicaController::class,'buscar']);
+Route::resource('musicas', MusicaController::class);
+
 Route::get('/', [HomeController::class, 'index']);

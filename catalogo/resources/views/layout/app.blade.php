@@ -21,7 +21,7 @@
       <div class="navbar-nav">
         <a class="nav-link" href="{{ url('/') }}">Home</a>
         <a class="nav-link" href="{{ url('artistas') }}">Artistas</a>
-        <a class="nav-link" href="#">Músicas</a>
+        <a class="nav-link" href="{{ url('musicas') }}">Músicas</a>
       </div>
     </div>
   </div>
